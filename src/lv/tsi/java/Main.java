@@ -20,6 +20,7 @@ public class Main {
             System.out.println(" Random = " + myNum);
             System.out.println(" Insert you name :" );
             myname = scan.next();
+            long t1 = System.currentTimeMillis();
             //System.out.println(" Helou " +myname+ "!!!");
             for (int i = 1; i < trcnt +1; i++) {
                 // int myNum = rand.nextInt(100)+1;
@@ -32,8 +33,10 @@ public class Main {
                     System.out.println(myname+" - BINGO!!. Do You want to repeat? y/n");
                     GameReult r =new GameReult();
                     trcnt = i;
+                    long t2 = System.currentTimeMillis();
                     r.name=myname;
                     r.triesCnt=i;
+                    r.triestime=(t2-t1)/1000;
                     results.add(r);
                     my_ok = true;
                     break;
@@ -56,7 +59,7 @@ public class Main {
     private static void showresult() {
         for (GameReult r : results)
         {
-            System.out.println(r.name+ ". You try count = "+r.triesCnt);
+            System.out.println("Player "+ r.name+ ". You try count = "+r.triesCnt+" , game time = "+r.triestime+ " sec.");
         }
     }
 
