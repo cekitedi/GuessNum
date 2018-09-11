@@ -1,37 +1,46 @@
 package lv.tsi.java;
 
-import java.util.InputMismatchException;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     static Random rand = new Random();
     static Scanner scan = new Scanner(System.in);
+    static List<GameReult> results= new ArrayList<>();
 
     //metod void nicego ne vozvrascaet
     public static void main(String[] args) {
         // write your code here
         String answer;
         int usernum;
+        String myname;
+        int trcnt =5;
         do {
             int myNum = rand.nextInt(100) + 1;
             boolean my_ok = false;
             System.out.println(" Random = " + myNum);
-
-            for (int i = 1; i < 6; i++) {
+            System.out.println(" Insert you name :" );
+            myname = scan.next();
+            //System.out.println(" Helou " +myname+ "!!!");
+            for (int i = 1; i < trcnt +1; i++) {
                 // int myNum = rand.nextInt(100)+1;
-                System.out.println("Try nr # " + i);
+
+                //System.out.println("Try nr # " + i);
                 //int usernum = scan.nextInt();
                 usernum = askNum();
 
                 if (myNum == usernum) {
-                    System.out.println("BINGO!!. Do You want to repeat? y/n");
+                    System.out.println(myname+" - BINGO!!. Do You want to repeat? y/n");
+                    GameReult r =new GameReult();
+                    trcnt = i;
+                    r.name=myname;
+                    r.triesCnt=i;
+                    results.add(r);
                     my_ok = true;
                     break;
                 } else if (myNum < usernum) {
-                    System.out.println("Значение Random < " + usernum);
+                    System.out.println(" Random < " + usernum);
                 } else {
-                    System.out.println("Значение Random > " + usernum);
+                    System.out.println(" Random > " + usernum);
                 }
             } // end for
             if (!my_ok) {
@@ -39,8 +48,16 @@ public class Main {
             }
             answer = askYN();
         } while (answer.equals("y"));
-        System.out.println("Good bye");
+        showresult();
+        //System.out.println("Good bye " +myname+ ". You try count = "+trcnt);
         // end
+    }
+
+    private static void showresult() {
+        for (GameReult r : results)
+        {
+            System.out.println(r.name+ ". You try count = "+r.triesCnt);
+        }
     }
 
     //metod string vozvrascaet string
