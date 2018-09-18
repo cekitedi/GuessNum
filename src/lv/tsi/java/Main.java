@@ -1,5 +1,8 @@
 package lv.tsi.java;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class Main {
@@ -10,6 +13,7 @@ public class Main {
     //metod void nicego ne vozvrascaet
     public static void main(String[] args) {
         // write your code here
+        loadrezult();
         String answer;
         int usernum;
         String myname;
@@ -22,7 +26,7 @@ public class Main {
             myname = scan.next();
             long t1 = System.currentTimeMillis();
             //System.out.println(" Helou " +myname+ "!!!");
-            for (int i = 1; i < trcnt +1; i++) {
+            for (int i = 1; i <6; i++) {
                 // int myNum = rand.nextInt(100)+1;
 
                 //System.out.println("Try nr # " + i);
@@ -38,6 +42,8 @@ public class Main {
                     r.triesCnt=i;
                     r.triestime=(t2-t1)/1000;
                     results.add(r);
+                    results.sort(Comparator.<GameReult>comparingInt(rr ->rr.triesCnt)
+                            .thenComparingLong( rr -> rr.triestime)); //peresortiruem spisok
                     my_ok = true;
                     break;
                 } else if (myNum < usernum) {
@@ -52,15 +58,59 @@ public class Main {
             answer = askYN();
         } while (answer.equals("y"));
         showresult();
+        saveresult();
         //System.out.println("Good bye " +myname+ ". You try count = "+trcnt);
         // end
     }
+    // zagruzaem dannie iz faila v list
+    private static void loadrezult() {
+        File mfile = new File("top_ss.txt");
+        try (Scanner in = new Scanner(mfile)) {
+            while (in.hasNext()) {
+            GameReult result = new GameReult();
+            result.name = in.next();
+            result.triesCnt = in.nextInt();
+            result.triestime = in.nextLong();
+            results.add(result);
+            }
+        } catch (IOException e) {
+            System.out.println("Cannot load file");
+        }
+    }
+    // spisok sohranjaem v fail
+    private static void saveresult() {
+        File mfile = new File("top_ss.txt");
+        try (PrintWriter out = new PrintWriter(mfile)) {
+           // out.println("Hello world ");
+            for (GameReult r : results)
+            {
+                out.printf("%s %d %d\n", r.name, r.triesCnt, r.triestime); // vmesto s - pervij p-tr; f - double; d - int i long; \n - perevod stroki
+            }
+        } catch (IOException e) {
+            System.out.println("Cannot save to file"+e);
+        }
+    }
 
     private static void showresult() {
-        for (GameReult r : results)
+        results.stream()
+                //.filter(r -> r.name.equals("Dima"))
+               // .sorted(Comparator.<GameReult>comparingInt(r -> r.triesCnt)
+               //                    .thenComparingLong( r -> r.triestime))
+                .limit(5)
+                .forEach(r -> {
+            System.out.printf("Player %s, you try counts - %d, game time - %d sec.\n", r.name, r.triesCnt, r.triestime);
+        }); //spisok v stream i protalkivaet elementi i dlja kazdogo elementa cto delatj
+    }
+    private static void showresult_o () {
+        int cnt = Math.min(3, results.size()); // vmesto niznego if
+        //if (results.size() <3 )   { cnt = results.size();  }
+        //for (GameReult r : results)
+        for  (int i = 0; i < cnt; i++)
         {
-            System.out.println("Player "+ r.name+ ". You try count = "+r.triesCnt+" , game time = "+r.triestime+ " sec.");
-        }
+            GameReult r = results.get(i);
+           // System.out.println("Player "+ r.name+ ". You try counts = "+r.triesCnt+" , game time = "+r.triestime+ " sec.");
+            System.out.printf("Player %s, you try counts - %d, game time - %d sec.\n", r.name, r.triesCnt, r.triestime);
+         }
     }
 
     //metod string vozvrascaet string
