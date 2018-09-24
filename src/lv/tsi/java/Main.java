@@ -98,8 +98,10 @@ public class Main {
                //                    .thenComparingLong( r -> r.triestime))
                 .limit(5)
                 .forEach(r -> {
-            System.out.printf("Player %s, you try counts - %d, game time - %d sec.\n", r.name, r.triesCnt, r.triestime);
-        }); //spisok v stream i protalkivaet elementi i dlja kazdogo elementa cto delatj
+            //System.out.printf("Player %s, you try counts - %d, game time - %d sec.\n", r.name, r.triesCnt, r.triestime);
+            System.out.printf("%15s %3d %5d sec.\n", r.name, r.triesCnt, r.triestime);
+
+                }); //spisok v stream i protalkivaet elementi i dlja kazdogo elementa cto delatj
     }
     private static void showresult_o () {
         int cnt = Math.min(3, results.size()); // vmesto niznego if
