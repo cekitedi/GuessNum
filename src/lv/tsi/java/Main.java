@@ -9,7 +9,7 @@ public class Main {
     static Random rand = new Random();
     static Scanner scan = new Scanner(System.in);
     static List<GameReult> results= new ArrayList<>();
-
+    public static int max_len = 1;
     //metod void nicego ne vozvrascaet
     public static void main(String[] args) {
         // write your code here
@@ -42,6 +42,8 @@ public class Main {
                     r.triesCnt=i;
                     r.triestime=(t2-t1)/1000;
                     results.add(r);
+                    max_len = Math.max(max_len, myname.length());
+
                     results.sort(Comparator.<GameReult>comparingInt(rr ->rr.triesCnt)
                             .thenComparingLong( rr -> rr.triestime)); //peresortiruem spisok
                     my_ok = true;
@@ -72,6 +74,8 @@ public class Main {
             result.triesCnt = in.nextInt();
             result.triestime = in.nextLong();
             results.add(result);
+             max_len = Math.max(max_len,result.name.length());
+
             }
         } catch (IOException e) {
             System.out.println("Cannot load file");
@@ -84,7 +88,7 @@ public class Main {
            // out.println("Hello world ");
             for (GameReult r : results)
             {
-                out.printf("%s %d %d\n", r.name, r.triesCnt, r.triestime); // vmesto s - pervij p-tr; f - double; d - int i long; \n - perevod stroki
+                out.printf("%-"+max_len+"s %3d %5d\n", r.name, r.triesCnt, r.triestime); // vmesto s - pervij p-tr; f - double; d - int i long; \n - perevod stroki
             }
         } catch (IOException e) {
             System.out.println("Cannot save to file"+e);
@@ -99,7 +103,8 @@ public class Main {
                 .limit(5)
                 .forEach(r -> {
             //System.out.printf("Player %s, you try counts - %d, game time - %d sec.\n", r.name, r.triesCnt, r.triestime);
-            System.out.printf("%15s %3d %5d sec.\n", r.name, r.triesCnt, r.triestime);
+            //        System.out.println("max_len="+max_len);
+            System.out.printf("%-"+max_len+"s %3d %5d sec.\n", r.name, r.triesCnt, r.triestime);
 
                 }); //spisok v stream i protalkivaet elementi i dlja kazdogo elementa cto delatj
     }
