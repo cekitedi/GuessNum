@@ -94,8 +94,15 @@ public class Main {
             System.out.println("Cannot save to file"+e);
         }
     }
-
+    private static int findmaxlen() {
+        return results.stream()
+                .map(r -> r.name)
+                .map(n -> n.length())
+                .max(Comparator.naturalOrder())
+                .get();
+    }
     private static void showresult() {
+        //findmaxlen();
         results.stream()
                 //.filter(r -> r.name.equals("Dima"))
                // .sorted(Comparator.<GameReult>comparingInt(r -> r.triesCnt)
