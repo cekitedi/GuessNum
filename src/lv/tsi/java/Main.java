@@ -59,7 +59,7 @@ public class Main {
             }
             answer = askYN();
         } while (answer.equals("y"));
-        showresult();
+        showResults();
         saveresult();
         //System.out.println("Good bye " +myname+ ". You try count = "+trcnt);
         // end
@@ -94,15 +94,28 @@ public class Main {
             System.out.println("Cannot save to file"+e);
         }
     }
-    private static int findmaxlen() {
+    private static int findMaxNameLen() {
         return results.stream()
                 .map(r -> r.name)
                 .map(n -> n.length())
                 .max(Comparator.naturalOrder())
                 .get();
     }
-    private static void showresult() {
-        //findmaxlen();
+    private static void showResults() {
+        int maxLen = findMaxNameLen();
+
+        results.stream()
+                .limit(5)
+                .forEach(r -> {
+                    System.out.print(r.name);
+                    for (int i = 0; i < (maxLen - r.name.length()); i++) {
+                        System.out.print("_");
+                    }
+                    System.out.printf("%d - %.2fsec\n", r.triesCnt, r.triestime / 1000.0);
+                });
+    }
+    // moi variant
+    private static void showresult_m() {
         results.stream()
                 //.filter(r -> r.name.equals("Dima"))
                // .sorted(Comparator.<GameReult>comparingInt(r -> r.triesCnt)
